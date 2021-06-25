@@ -57,6 +57,9 @@ func Process(dir string, recipient string) {
 	}
 
 	stmt, err := db.Prepare(SMSQuery)
+	if err != nil {
+		fmt.Println(err)
+	}
 	defer stmt.Close()
 
 	rows, err := stmt.Query(recipient)
@@ -85,7 +88,7 @@ func Process(dir string, recipient string) {
 
 func HandleiOSBackups(_ string, recipient string) {
 	var rootDir = "/Library/Application Support/MobileSync/Backup/"
-	var smsDB = "Library/SMS/sms.db"
+	// var smsDB = "Library/SMS/sms.db"
 	usr, _ := user.Current()
 
 	dir := path.Join(usr.HomeDir, rootDir)
@@ -118,24 +121,28 @@ func HandleiOSBackups(_ string, recipient string) {
 		os.Exit(1)
 	}
 
-	rows, err := db.Query(BackupQuery)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	var dbHash string
-
-	var fileID string
-	var domain string
-	var filePath string
-
-	for rows.Next() {
-		rows.Scan(&fileID, &domain, &filePath)
-		if filePath == smsDB {
-			dbHash = fileID
+	/*
+		rows, err := db.Query(BackupQuery)
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
-	}
+
+		// var dbHash string
+
+			var fileID string
+			var domain string
+			var filePath string
+
+				for rows.Next() {
+					rows.Scan(&fileID, &domain, &filePath)
+					if filePath == smsDB {
+						dbHash = fileID
+					}
+				}
+	*/
+
+	dbHash := "3d0d7e5fb2ce288813306e4d4636395e047a3d28"
 
 	pth := path.Join(usr.HomeDir, rootDir, latestBackupDir, dbHash[0:2], dbHash)
 
