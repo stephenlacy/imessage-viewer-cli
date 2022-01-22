@@ -1,7 +1,13 @@
 # iMessage-viewer-cli
 > Dump iMessage chats to pdf
 
+### Building
+```
+go build -o imessage-viewer main.go
+```
+
 ### Usage
+(https://gitlab.com/gnachman/iterm2/-/wikis/Fulldiskaccess)[Ensure iTerm has full disk access]
 
 ```
 ./imessage-viewer <command> <number>
